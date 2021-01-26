@@ -1,0 +1,31 @@
+﻿
+@model StudentRegistration.Models.Class
+
+
+
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = null;
+}
+
+
+
+@using (Html.BeginForm("EditClass", "Class"))
+
+{
+
+
+    @Html.TextBoxFor(m => m.ClassName, new { @class = "form-control", placeholder = "ClassName" })
+
+
+   
+
+
+    @Html.HiddenFor(m => m.ClassID)
+    <button type="submit" value="Save Changes" class="btn btn-success">Submit</button>
+
+
+
+
+}

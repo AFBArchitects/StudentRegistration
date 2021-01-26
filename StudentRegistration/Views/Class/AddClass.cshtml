@@ -1,0 +1,29 @@
+﻿@model StudentRegistration.Models.Class
+
+@{
+    ViewBag.Title = "AddStudent";
+    Layout = null;
+}
+
+
+
+@using (Html.BeginForm("AddClass", "Class"))
+
+{
+
+
+    @Html.TextBoxFor(m => m.ClassName, new { @class = "form-control", placeholder = "ClassName", required = true })
+
+   
+
+   
+
+
+
+    @Html.HiddenFor(m => m.ClassID)
+    <button type="submit" value="Submit" class="btn btn-success">Submit</button>
+
+
+}
+
+

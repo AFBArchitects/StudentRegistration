@@ -1,0 +1,109 @@
+﻿@model StudentRegistration.Models.StdRegistration
+@{
+    //  ViewBag.Title = "AddStudent";
+    ViewBag.Title = "StudentRecord";
+}
+
+
+<div id="emailDetailContent"></div> 
+
+<h2>Student Record</h2>
+
+<a href="javascript:studentDetails('0')" class="stdDetail btn btn-success" data-id="0">Add student</a>
+
+<br />
+<br />
+<table id="tablemodel" class="table table-bordered table-hover table-striped ">
+
+    <thead>
+
+        <tr>
+            <th>Sid</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Father Name</th>
+            <th>Student Cnic</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Subjects</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.List)
+        {
+            <tr>
+                <td>@item.Sid</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.FatherName</td>
+                <td>@item.StudentCnic</td>
+                <td>@item.Address</td>
+                <td>@item.Email</td>
+                <td>@item.SubjectNames</td>
+
+                <td>
+                    <a href="javascript:studentDetails('@item.Sid')" class="stdDetail btn btn-success" data-id="@item.Sid">Edit</a>
+                    <a href="javascript:studentProfile('@item.Sid')" class="stdDetail btn btn-success" data-id="@item.Sid">Profile</a>
+                    <a href="@Url.Action("Delete",new { id=item.Sid })"><i class="btn btn-danger"><b>Delete</b> </i></a>
+                    @*<a href="@Url.Action("Edit",new { id=item.Sid})"><i class="btn btn-success">Edit</i></a>*@
+                    @*<a href="@Url.Action("ProfileView",new { id=item.Sid})"><i class="btn btn-success user-alt">Profile</i></a>*@
+
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+@section scripts{
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $('#tablemodel').DataTable({ });
+
+        function studentDetails(rid) {
+            $.ajax({
+                type: "GET",
+                url: '/Student/AddEditStudent',
+                contentType: "application/json; charset=utf-8",
+                data: { "id": rid },
+                datatype: "json",
+                success: function (data) {
+                    $('#emailDetailContent').html(data);
+                    $('#ViewModal').modal('show');
+                },
+                error: function () {
+                    alert("Data load failed.");
+                }
+            });
+
+        }
+
+        function studentProfile(rid) {
+            $.ajax({
+                type: "GET",
+                url: '/Student/ProfileView',
+                contentType: "application/json; charset=utf-8",
+                data: { "id": rid },
+                datatype: "json",
+                success: function (data) {
+                    $('#emailDetailContent').html(data);
+                    $('#ViewModal').modal('show');
+                },
+                error: function () {
+                    alert("Data load failed.");
+                }
+            });
+
+        }
+    </script>
+
+}
+
+
+

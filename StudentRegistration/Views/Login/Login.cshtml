@@ -1,0 +1,133 @@
+﻿`
+
+
+@model StudentRegistration.Models.StdRegistration
+
+@{
+    ViewBag.Title = "Login";
+  // Layout = null;
+}
+
+
+<script>
+    $(document).ready(function () {
+        //$('.js-example-basic-multiple').select2();
+        $('#exampleModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        });
+        $('#exampleModal1').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        });
+    });
+</script>
+
+
+@*@using (Html.BeginForm("Login", "Login"))
+
+    {
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a href="~/Login/Register" class="text-center">Register a new membership</a>
+
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Register a new Membership
+        </button>
+
+    }*@
+
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Login
+</button>
+
+@using (Html.BeginForm("Login", "Login"))
+
+{
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Student Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+                    <br />
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                    <br />
+                    @*<button type="submit" class="btn btn-success">Submit</button>
+                   <a href="~/Login/Register" class="text-center">Register a new membership</a>*@
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" data-dismiss="modal">Submit</button>
+                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<br />
+
+
+
+
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1">
+    Register New Membership
+</button>
+
+
+                @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { id = "form" }))
+
+                {
+                    <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Firstname" })
+                                    <br />
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Lastname" })
+                                    <br />
+                                    @Html.TextBoxFor(m => m.FatherName, new { @class = "form-control", placeholder = "Fathername" })
+                                    <br />
+                                    @Html.TextBoxFor(m => m.StudentCnic, new { @class = "form-control", placeholder = "StudentCnic" })
+                                    <br />
+                                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+                                    <br />
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+                                    <br />
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" value="Submit" class="btn btn-success" data-dismiss="modal">Submit</button>
+                                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+

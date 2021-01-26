@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="df41e0028e4e4ffa8eacbb3eea28cf06" Name="Diagram1">
+        <EntityTypeShape EntityType="SchoolSystemModel.Class" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="SchoolSystemModel.StdRegistration" Width="1.5" PointX="8.75" PointY="3" />
+        <EntityTypeShape EntityType="SchoolSystemModel.Subject" Width="1.5" PointX="8.25" PointY="0.625" />
+        <EntityTypeShape EntityType="SchoolSystemModel.SubjectAssign" Width="1.5" PointX="5.25" PointY="3.125" />
+        <EntityTypeShape EntityType="SchoolSystemModel.TeacherAssign" Width="1.5" PointX="4.875" PointY="0.5" />
+        <EntityTypeShape EntityType="SchoolSystemModel.TeacherRegistration" Width="1.5" PointX="2.75" PointY="0.5" />
+        <AssociationConnector Association="SchoolSystemModel.FK__SubjectAs__SR_FK__412EB0B6" />
+        <AssociationConnector Association="SchoolSystemModel.FK__SubjectAs__SS_FK__403A8C7D" />
+        <AssociationConnector Association="SchoolSystemModel.FK__TeacherAs__SS_FK__44FF419A" />
+        <AssociationConnector Association="SchoolSystemModel.FK__TeacherAs__TR_FK__440B1D61" />
+        <EntityTypeShape EntityType="SchoolSystemModel.StudentTeacher" Width="1.5" PointX="2.625" PointY="3.875" />
+        <AssociationConnector Association="SchoolSystemModel.FK__StudentTe__SR_FK__4CA06362" />
+        <AssociationConnector Association="SchoolSystemModel.FK__StudentTe__TR_FK__4BAC3F29" />
+        <EntityTypeShape EntityType="SchoolSystemModel.sysdiagram" Width="1.5" PointX="0.75" PointY="6.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

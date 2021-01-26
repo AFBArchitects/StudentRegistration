@@ -1,0 +1,495 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SchoolSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="ClassID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="StdRegistrations">
+          <Key>
+            <PropertyRef Name="Sid" />
+          </Key>
+          <Property Name="Sid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="FatherName" Type="varchar" MaxLength="50" />
+          <Property Name="StudentCnic" Type="int" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="SubjectID" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="StudentTeacher">
+          <Key>
+            <PropertyRef Name="StudentTeacherID" />
+          </Key>
+          <Property Name="StudentTeacherID" Type="int" Nullable="false" />
+          <Property Name="TR_FK" Type="int" />
+          <Property Name="SR_FK" Type="int" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="SubjectID" />
+          </Key>
+          <Property Name="SubjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubjectName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SubjectAssign">
+          <Key>
+            <PropertyRef Name="SubAssignId" />
+          </Key>
+          <Property Name="SubAssignId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SS_FK" Type="int" />
+          <Property Name="SR_FK" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TeacherAssign">
+          <Key>
+            <PropertyRef Name="TSubAssignId" />
+          </Key>
+          <Property Name="TSubAssignId" Type="int" Nullable="false" />
+          <Property Name="TR_FK" Type="int" />
+          <Property Name="SS_FK" Type="int" />
+        </EntityType>
+        <EntityType Name="TeacherRegistration">
+          <Key>
+            <PropertyRef Name="Tid" />
+          </Key>
+          <Property Name="Tid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeacherName" Type="varchar" MaxLength="50" />
+          <Property Name="TeacherCnic" Type="int" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__StudentTe__SR_FK__4CA06362">
+          <End Role="StdRegistrations" Type="Self.StdRegistrations" Multiplicity="0..1" />
+          <End Role="StudentTeacher" Type="Self.StudentTeacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StdRegistrations">
+              <PropertyRef Name="Sid" />
+            </Principal>
+            <Dependent Role="StudentTeacher">
+              <PropertyRef Name="SR_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentTe__TR_FK__4BAC3F29">
+          <End Role="TeacherRegistration" Type="Self.TeacherRegistration" Multiplicity="0..1" />
+          <End Role="StudentTeacher" Type="Self.StudentTeacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TeacherRegistration">
+              <PropertyRef Name="Tid" />
+            </Principal>
+            <Dependent Role="StudentTeacher">
+              <PropertyRef Name="TR_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SubjectAs__SR_FK__412EB0B6">
+          <End Role="StdRegistrations" Type="Self.StdRegistrations" Multiplicity="0..1" />
+          <End Role="SubjectAssign" Type="Self.SubjectAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StdRegistrations">
+              <PropertyRef Name="Sid" />
+            </Principal>
+            <Dependent Role="SubjectAssign">
+              <PropertyRef Name="SR_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SubjectAs__SS_FK__403A8C7D">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+          <End Role="SubjectAssign" Type="Self.SubjectAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="SubjectAssign">
+              <PropertyRef Name="SS_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TeacherAs__SS_FK__44FF419A">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+          <End Role="TeacherAssign" Type="Self.TeacherAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="TeacherAssign">
+              <PropertyRef Name="SS_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TeacherAs__TR_FK__440B1D61">
+          <End Role="TeacherRegistration" Type="Self.TeacherRegistration" Multiplicity="0..1" />
+          <End Role="TeacherAssign" Type="Self.TeacherAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TeacherRegistration">
+              <PropertyRef Name="Tid" />
+            </Principal>
+            <Dependent Role="TeacherAssign">
+              <PropertyRef Name="TR_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SchoolSystemModelStoreContainer">
+          <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StdRegistrations" EntityType="Self.StdRegistrations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentTeacher" EntityType="Self.StudentTeacher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubjectAssign" EntityType="Self.SubjectAssign" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeacherAssign" EntityType="Self.TeacherAssign" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeacherRegistration" EntityType="Self.TeacherRegistration" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__StudentTe__SR_FK__4CA06362" Association="Self.FK__StudentTe__SR_FK__4CA06362">
+            <End Role="StdRegistrations" EntitySet="StdRegistrations" />
+            <End Role="StudentTeacher" EntitySet="StudentTeacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentTe__TR_FK__4BAC3F29" Association="Self.FK__StudentTe__TR_FK__4BAC3F29">
+            <End Role="TeacherRegistration" EntitySet="TeacherRegistration" />
+            <End Role="StudentTeacher" EntitySet="StudentTeacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SubjectAs__SR_FK__412EB0B6" Association="Self.FK__SubjectAs__SR_FK__412EB0B6">
+            <End Role="StdRegistrations" EntitySet="StdRegistrations" />
+            <End Role="SubjectAssign" EntitySet="SubjectAssign" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SubjectAs__SS_FK__403A8C7D" Association="Self.FK__SubjectAs__SS_FK__403A8C7D">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="SubjectAssign" EntitySet="SubjectAssign" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TeacherAs__SS_FK__44FF419A" Association="Self.FK__TeacherAs__SS_FK__44FF419A">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="TeacherAssign" EntitySet="TeacherAssign" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TeacherAs__TR_FK__440B1D61" Association="Self.FK__TeacherAs__TR_FK__440B1D61">
+            <End Role="TeacherRegistration" EntitySet="TeacherRegistration" />
+            <End Role="TeacherAssign" EntitySet="TeacherAssign" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SchoolSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SchoolSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Classes" EntityType="SchoolSystemModel.Class" />
+          <EntitySet Name="StdRegistrations" EntityType="SchoolSystemModel.StdRegistration" />
+          <EntitySet Name="Subjects" EntityType="SchoolSystemModel.Subject" />
+          <EntitySet Name="SubjectAssigns" EntityType="SchoolSystemModel.SubjectAssign" />
+          <EntitySet Name="TeacherAssigns" EntityType="SchoolSystemModel.TeacherAssign" />
+          <EntitySet Name="TeacherRegistrations" EntityType="SchoolSystemModel.TeacherRegistration" />
+          <AssociationSet Name="FK__SubjectAs__SR_FK__412EB0B6" Association="SchoolSystemModel.FK__SubjectAs__SR_FK__412EB0B6">
+            <End Role="StdRegistration" EntitySet="StdRegistrations" />
+            <End Role="SubjectAssign" EntitySet="SubjectAssigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SubjectAs__SS_FK__403A8C7D" Association="SchoolSystemModel.FK__SubjectAs__SS_FK__403A8C7D">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="SubjectAssign" EntitySet="SubjectAssigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TeacherAs__SS_FK__44FF419A" Association="SchoolSystemModel.FK__TeacherAs__SS_FK__44FF419A">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="TeacherAssign" EntitySet="TeacherAssigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TeacherAs__TR_FK__440B1D61" Association="SchoolSystemModel.FK__TeacherAs__TR_FK__440B1D61">
+            <End Role="TeacherRegistration" EntitySet="TeacherRegistrations" />
+            <End Role="TeacherAssign" EntitySet="TeacherAssigns" />
+          </AssociationSet>
+          <EntitySet Name="StudentTeachers" EntityType="SchoolSystemModel.StudentTeacher" />
+          <AssociationSet Name="FK__StudentTe__SR_FK__4CA06362" Association="SchoolSystemModel.FK__StudentTe__SR_FK__4CA06362">
+            <End Role="StdRegistration" EntitySet="StdRegistrations" />
+            <End Role="StudentTeacher" EntitySet="StudentTeachers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentTe__TR_FK__4BAC3F29" Association="SchoolSystemModel.FK__StudentTe__TR_FK__4BAC3F29">
+            <End Role="TeacherRegistration" EntitySet="TeacherRegistrations" />
+            <End Role="StudentTeacher" EntitySet="StudentTeachers" />
+          </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="SchoolSystemModel.sysdiagram" />
+        </EntityContainer>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="ClassID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StdRegistration">
+          <Key>
+            <PropertyRef Name="Sid" />
+          </Key>
+          <Property Name="Sid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FatherName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StudentCnic" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SubjectAssigns" Relationship="SchoolSystemModel.FK__SubjectAs__SR_FK__412EB0B6" FromRole="StdRegistration" ToRole="SubjectAssign" />
+          <NavigationProperty Name="StudentTeachers" Relationship="SchoolSystemModel.FK__StudentTe__SR_FK__4CA06362" FromRole="StdRegistration" ToRole="StudentTeacher" />
+          <Property Name="SubjectID" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="SubjectID" />
+          </Key>
+          <Property Name="SubjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SubjectAssigns" Relationship="SchoolSystemModel.FK__SubjectAs__SS_FK__403A8C7D" FromRole="Subject" ToRole="SubjectAssign" />
+          <NavigationProperty Name="TeacherAssigns" Relationship="SchoolSystemModel.FK__TeacherAs__SS_FK__44FF419A" FromRole="Subject" ToRole="TeacherAssign" />
+        </EntityType>
+        <EntityType Name="SubjectAssign">
+          <Key>
+            <PropertyRef Name="SubAssignId" />
+          </Key>
+          <Property Name="SubAssignId" Type="Int32" Nullable="false" />
+          <Property Name="SS_FK" Type="Int32" />
+          <Property Name="SR_FK" Type="Int32" />
+          <NavigationProperty Name="StdRegistration" Relationship="SchoolSystemModel.FK__SubjectAs__SR_FK__412EB0B6" FromRole="SubjectAssign" ToRole="StdRegistration" />
+          <NavigationProperty Name="Subject" Relationship="SchoolSystemModel.FK__SubjectAs__SS_FK__403A8C7D" FromRole="SubjectAssign" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="TeacherAssign">
+          <Key>
+            <PropertyRef Name="TSubAssignId" />
+          </Key>
+          <Property Name="TSubAssignId" Type="Int32" Nullable="false" />
+          <Property Name="TR_FK" Type="Int32" />
+          <Property Name="SS_FK" Type="Int32" />
+          <NavigationProperty Name="Subject" Relationship="SchoolSystemModel.FK__TeacherAs__SS_FK__44FF419A" FromRole="TeacherAssign" ToRole="Subject" />
+          <NavigationProperty Name="TeacherRegistration" Relationship="SchoolSystemModel.FK__TeacherAs__TR_FK__440B1D61" FromRole="TeacherAssign" ToRole="TeacherRegistration" />
+        </EntityType>
+        <EntityType Name="TeacherRegistration">
+          <Key>
+            <PropertyRef Name="Tid" />
+          </Key>
+          <Property Name="Tid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TeacherCnic" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TeacherAssigns" Relationship="SchoolSystemModel.FK__TeacherAs__TR_FK__440B1D61" FromRole="TeacherRegistration" ToRole="TeacherAssign" />
+          <NavigationProperty Name="StudentTeachers" Relationship="SchoolSystemModel.FK__StudentTe__TR_FK__4BAC3F29" FromRole="TeacherRegistration" ToRole="StudentTeacher" />
+        </EntityType>
+        <Association Name="FK__SubjectAs__SR_FK__412EB0B6">
+          <End Type="SchoolSystemModel.StdRegistration" Role="StdRegistration" Multiplicity="0..1" />
+          <End Type="SchoolSystemModel.SubjectAssign" Role="SubjectAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StdRegistration">
+              <PropertyRef Name="Sid" />
+            </Principal>
+            <Dependent Role="SubjectAssign">
+              <PropertyRef Name="SR_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SubjectAs__SS_FK__403A8C7D">
+          <End Type="SchoolSystemModel.Subject" Role="Subject" Multiplicity="0..1" />
+          <End Type="SchoolSystemModel.SubjectAssign" Role="SubjectAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="SubjectAssign">
+              <PropertyRef Name="SS_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TeacherAs__SS_FK__44FF419A">
+          <End Type="SchoolSystemModel.Subject" Role="Subject" Multiplicity="0..1" />
+          <End Type="SchoolSystemModel.TeacherAssign" Role="TeacherAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="TeacherAssign">
+              <PropertyRef Name="SS_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TeacherAs__TR_FK__440B1D61">
+          <End Type="SchoolSystemModel.TeacherRegistration" Role="TeacherRegistration" Multiplicity="0..1" />
+          <End Type="SchoolSystemModel.TeacherAssign" Role="TeacherAssign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TeacherRegistration">
+              <PropertyRef Name="Tid" />
+            </Principal>
+            <Dependent Role="TeacherAssign">
+              <PropertyRef Name="TR_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="StudentTeacher">
+          <Key>
+            <PropertyRef Name="StudentTeacherID" />
+          </Key>
+          <Property Name="StudentTeacherID" Type="Int32" Nullable="false" />
+          <Property Name="TR_FK" Type="Int32" />
+          <Property Name="SR_FK" Type="Int32" />
+          <NavigationProperty Name="StdRegistration" Relationship="SchoolSystemModel.FK__StudentTe__SR_FK__4CA06362" FromRole="StudentTeacher" ToRole="StdRegistration" />
+          <NavigationProperty Name="TeacherRegistration" Relationship="SchoolSystemModel.FK__StudentTe__TR_FK__4BAC3F29" FromRole="StudentTeacher" ToRole="TeacherRegistration" />
+        </EntityType>
+        <Association Name="FK__StudentTe__SR_FK__4CA06362">
+          <End Type="SchoolSystemModel.StdRegistration" Role="StdRegistration" Multiplicity="0..1" />
+          <End Type="SchoolSystemModel.StudentTeacher" Role="StudentTeacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StdRegistration">
+              <PropertyRef Name="Sid" />
+            </Principal>
+            <Dependent Role="StudentTeacher">
+              <PropertyRef Name="SR_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentTe__TR_FK__4BAC3F29">
+          <End Type="SchoolSystemModel.TeacherRegistration" Role="TeacherRegistration" Multiplicity="0..1" />
+          <End Type="SchoolSystemModel.StudentTeacher" Role="StudentTeacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TeacherRegistration">
+              <PropertyRef Name="Tid" />
+            </Principal>
+            <Dependent Role="StudentTeacher">
+              <PropertyRef Name="TR_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SchoolSystemModelStoreContainer" CdmEntityContainer="SchoolSystemEntities">
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="SchoolSystemModel.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StdRegistrations">
+            <EntityTypeMapping TypeName="SchoolSystemModel.StdRegistration">
+              <MappingFragment StoreEntitySet="StdRegistrations">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="StudentCnic" ColumnName="StudentCnic" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Sid" ColumnName="Sid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subjects">
+            <EntityTypeMapping TypeName="SchoolSystemModel.Subject">
+              <MappingFragment StoreEntitySet="Subject">
+                <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubjectAssigns">
+            <EntityTypeMapping TypeName="SchoolSystemModel.SubjectAssign">
+              <MappingFragment StoreEntitySet="SubjectAssign">
+                <ScalarProperty Name="SR_FK" ColumnName="SR_FK" />
+                <ScalarProperty Name="SS_FK" ColumnName="SS_FK" />
+                <ScalarProperty Name="SubAssignId" ColumnName="SubAssignId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TeacherAssigns">
+            <EntityTypeMapping TypeName="SchoolSystemModel.TeacherAssign">
+              <MappingFragment StoreEntitySet="TeacherAssign">
+                <ScalarProperty Name="SS_FK" ColumnName="SS_FK" />
+                <ScalarProperty Name="TR_FK" ColumnName="TR_FK" />
+                <ScalarProperty Name="TSubAssignId" ColumnName="TSubAssignId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TeacherRegistrations">
+            <EntityTypeMapping TypeName="SchoolSystemModel.TeacherRegistration">
+              <MappingFragment StoreEntitySet="TeacherRegistration">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="TeacherCnic" ColumnName="TeacherCnic" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="Tid" ColumnName="Tid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentTeachers">
+            <EntityTypeMapping TypeName="SchoolSystemModel.StudentTeacher">
+              <MappingFragment StoreEntitySet="StudentTeacher">
+                <ScalarProperty Name="SR_FK" ColumnName="SR_FK" />
+                <ScalarProperty Name="TR_FK" ColumnName="TR_FK" />
+                <ScalarProperty Name="StudentTeacherID" ColumnName="StudentTeacherID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SchoolSystemModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
