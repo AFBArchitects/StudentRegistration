@@ -31,7 +31,7 @@ namespace StudentRegistration.Controllers
                 Subjects = (from sb in ab.SubjectAssigns
                             join s in ab.Subjects on sb.SS_FK equals s.SubjectID
                             where sb.SR_FK == a.Sid
-                            select new SubjectDto
+                            select new SubjectDto 
                             {
                                 SubjectName = s.SubjectName,
                             }).ToList()
@@ -127,7 +127,9 @@ namespace StudentRegistration.Controllers
 
             ab.StdRegistrations.Remove(ab.StdRegistrations.Where(x => x.Sid == id).First());
             ab.SaveChanges();
-            return RedirectToAction("StudentRecord");
+              
+            return RedirectToAction("StudentRecord"); 
+
         }
         public ActionResult ProfileView(int id)
         {

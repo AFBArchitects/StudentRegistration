@@ -5,7 +5,7 @@
 }
 
 
-<div id="emailDetailContent"></div> 
+<div id="emailDetailContent"></div>
 
 <h2>Student Record</h2>
 
@@ -33,7 +33,7 @@
     <tbody>
         @foreach (var item in ViewBag.List)
         {
-            <tr>
+            <tr id="row_@item.Sid">
                 <td>@item.Sid</td>
                 <td>@item.FirstName</td>
                 <td>@item.LastName</td>
@@ -46,9 +46,9 @@
                 <td>
                     <a href="javascript:studentDetails('@item.Sid')" class="stdDetail btn btn-success" data-id="@item.Sid">Edit</a>
                     <a href="javascript:studentProfile('@item.Sid')" class="stdDetail btn btn-success" data-id="@item.Sid">Profile</a>
-                    <a href="@Url.Action("Delete",new { id=item.Sid })"><i class="btn btn-danger"><b>Delete</b> </i></a>
-                    @*<a href="@Url.Action("Edit",new { id=item.Sid})"><i class="btn btn-success">Edit</i></a>*@
-                    @*<a href="@Url.Action("ProfileView",new { id=item.Sid})"><i class="btn btn-success user-alt">Profile</i></a>*@
+                    @*<a href="@Url.Action("Delete",new { id=item.Sid })"><i class="btn btn-danger"><b>Delete</b> </i></a>*@
+
+                    <a class="btn btn-danger"  onclick="ConfirmDelete(@item.Sid)">Delete</a>
 
                 </td>
             </tr>
@@ -58,13 +58,54 @@
 </table>
 
 
+@*Delete Modal*@
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Delete Student</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure to delete this?</h4>
+                <div style="text-align:center; display:none" id="loaderDiv">
+                    <img src="~/Content/Image/images (1).jpg" style="height:200px; width:200px" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="DeleteStudent()">Confirm</a>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="hiddenid" />
+</div>
+
+
+@*End*@
+
+
+
 <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
 
 @section scripts{
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $('#tablemodel').DataTable({ });
+        $('#tablemodel').DataTable({});
+
+
+        $(function () {
+            $("#loaderbody").addClass('hide');
+
+
+            $(document).bind('ajaxStart', function () {
+                $("#loaderbody").removeClass('hide');
+            }).bind('ajaxStop', function () {
+                $("#loaderbody").addClass('hide');
+            });
+        });
 
         function studentDetails(rid) {
             $.ajax({
@@ -101,6 +142,37 @@
             });
 
         }
+
+        
+        var ConfirmDelete = function (id) {
+            $("#hiddenid").val(id);
+            $("#myModal").modal('show');
+          
+        }
+
+        var DeleteStudent = function () {
+           
+      
+           
+            var stdid = $("#hiddenid").val();
+            $("#loaderbody").show();
+            $.ajax({
+
+                type: "POST",
+                url: "/Student/Delete",
+                data: { id: stdid },
+                success: function (result) {
+                    $("#loaderDiv").hide();
+                    $("#myModal").modal("hide");
+                    $("#row_" + stdid).remove();
+                },
+
+                complete: function () {
+                    $("#loaderbody").hide();
+                }
+                })
+        }
+
     </script>
 
 }

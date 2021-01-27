@@ -15,7 +15,7 @@
         <AssociationConnector Association="SchoolSystemModel.FK__SubjectAs__SS_FK__403A8C7D" />
         <AssociationConnector Association="SchoolSystemModel.FK__TeacherAs__SS_FK__44FF419A" />
         <AssociationConnector Association="SchoolSystemModel.FK__TeacherAs__TR_FK__440B1D61" />
-        <EntityTypeShape EntityType="SchoolSystemModel.StudentTeacher" Width="1.5" PointX="2.625" PointY="3.875" />
+        <EntityTypeShape EntityType="SchoolSystemModel.StudentTeacher" Width="1.5" PointX="2.625" PointY="4.375" />
         <AssociationConnector Association="SchoolSystemModel.FK__StudentTe__SR_FK__4CA06362" />
         <AssociationConnector Association="SchoolSystemModel.FK__StudentTe__TR_FK__4BAC3F29" />
         <EntityTypeShape EntityType="SchoolSystemModel.sysdiagram" Width="1.5" PointX="0.75" PointY="6.75" />

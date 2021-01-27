@@ -64,7 +64,7 @@
           <Key>
             <PropertyRef Name="TSubAssignId" />
           </Key>
-          <Property Name="TSubAssignId" Type="int" Nullable="false" />
+          <Property Name="TSubAssignId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TR_FK" Type="int" />
           <Property Name="SS_FK" Type="int" />
         </EntityType>
@@ -78,6 +78,7 @@
           <Property Name="Address" Type="varchar" MaxLength="50" />
           <Property Name="Email" Type="varchar" MaxLength="50" />
           <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="SubjectID" Type="int" />
         </EntityType>
         <Association Name="FK__StudentTe__SR_FK__4CA06362">
           <End Role="StdRegistrations" Type="Self.StdRegistrations" Multiplicity="0..1" />
@@ -288,6 +289,7 @@
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TeacherAssigns" Relationship="SchoolSystemModel.FK__TeacherAs__TR_FK__440B1D61" FromRole="TeacherRegistration" ToRole="TeacherAssign" />
           <NavigationProperty Name="StudentTeachers" Relationship="SchoolSystemModel.FK__StudentTe__TR_FK__4BAC3F29" FromRole="TeacherRegistration" ToRole="StudentTeacher" />
+          <Property Name="SubjectID" Type="Int32" />
         </EntityType>
         <Association Name="FK__SubjectAs__SR_FK__412EB0B6">
           <End Type="SchoolSystemModel.StdRegistration" Role="StdRegistration" Multiplicity="0..1" />
@@ -440,6 +442,7 @@
           <EntitySetMapping Name="TeacherRegistrations">
             <EntityTypeMapping TypeName="SchoolSystemModel.TeacherRegistration">
               <MappingFragment StoreEntitySet="TeacherRegistration">
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Address" ColumnName="Address" />

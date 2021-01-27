@@ -1,86 +1,153 @@
 ﻿using StudentRegistration.Models;
+using StudentRegistration.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data;
 
 namespace StudentRegistration.Controllers
 {
     public class TeacherController : Controller
     {
         SchoolSystemEntities ab = new SchoolSystemEntities();
-        // GET: Teacher
-        [HttpGet]
-        public ActionResult AddTeacher()
+    
+        public ActionResult TeacherRecord()
         {
+            var tea = new List<TeacherDto>();
+            tea = ab.TeacherRegistrations.Select(a => new TeacherDto
+            {
+                Tid=a.Tid,
+                TeacherName=a.TeacherName,
+                TeacherCnic=a.TeacherCnic,
+                Address=a.Address,
+                Email=a.Email,
+                SubjectID = a.SubjectID,
+                Subjects = (from sb in ab.TeacherAssigns
+                            join s in ab.Subjects on sb.SS_FK equals s.SubjectID
+                            where sb.TR_FK == a.Tid
+                            select new SubjectsDto
+                            {
+                                SubjectName = s.SubjectName,
+                            }).ToList()
+
+            }).ToList();
+            tea.ForEach(x =>
+            {
+                if (x.Subjects != null)
+                {
+                    x.SubjectNames = string.Join(", ", x.Subjects.Select(p => p.SubjectName.ToString()));
+                }
+
+            });
+            ViewBag.List = tea; 
             return View();
         }
-        [HttpPost]
-        public ActionResult AddTeacher(TeacherRegistration model)
 
+        [HttpGet]
+        public ActionResult AddEditTeacher(int id=0)
         {
-            TeacherRegistration obj = new TeacherRegistration();
-            obj.TeacherName = model.TeacherName;
-            obj.TeacherCnic = model.TeacherCnic;
-            obj.Address = model.Address;
-            obj.Email = model.Email;
-            obj.Password = model.Password;
-            ab.TeacherRegistrations.Add(obj);
+            var subjects = ab.Subjects.ToList();
+            ViewBag.subjects = subjects.Select(x => new SelectListItem {Value=x.SubjectID.ToString(), Text=x.SubjectName }).ToList();
+
+            var tea = new TeacherDto();
+           
+            if(id>0)
+            {
+                tea = ab.TeacherRegistrations.Where(a => a.Tid == id).Select(a => new TeacherDto
+                {
+                    Tid = a.Tid,
+                    TeacherName = a.TeacherName,
+                    TeacherCnic = a.TeacherCnic,
+                    Address = a.Address,
+                    Email = a.Email,
+                    SubjectID = a.SubjectID,
+                    SubjectIds = ab.TeacherAssigns.Where(s => s.TR_FK == id).Select(b => b.SS_FK).ToList()
+
+                }).FirstOrDefault();
+            }
+               
+            return PartialView("_AddEditTeacher",tea);
+        }
+        [HttpPost]
+        public ActionResult AddEditTeacher(TeacherDto model)
+        {
+            var item = ab.TeacherRegistrations.FirstOrDefault(x=>x.Tid==model.Tid);
+            if(item == null)
+            {
+                item = new TeacherRegistration();
+                ab.TeacherRegistrations.Add(item);
+            }
+
+            item.TeacherName = model.TeacherName;
+            item.TeacherCnic = model.TeacherCnic;
+            item.Address = model.Address;
+            item.Email = model.Email;
+            if(model.Password != null)
+            {
+                item.Password = model.Password;
+            }
             ab.SaveChanges();
 
-            return RedirectToAction("TeacherRecord");
+            var temp = item.Tid;
+            if(model.SubjectIds.Count > 0)
+            {
+                var ListAssign = ab.TeacherAssigns.Where(x => x.TR_FK == model.Tid).ToList();
+                if(ListAssign.Count > 0)
+                {
+                    ab.TeacherAssigns.RemoveRange(ListAssign);
+                    ab.SaveChanges();
+                }
 
+                foreach (var item1 in model.SubjectIds)
+                {
+                    TeacherAssign teacherAssign = new TeacherAssign();
+                    teacherAssign.TR_FK = temp;
+                    teacherAssign.SS_FK = item1;
+                    ab.TeacherAssigns.Add(teacherAssign);
+                    ab.SaveChanges();
+                }
+                ab.SaveChanges();
+            }
+
+            return RedirectToAction("TeacherRecord");
         }
-        public ActionResult TeacherRecord()
-        { 
-            var item = ab.TeacherRegistrations.ToList();
-       
-            return View(item);
-        }
+
+
         public ActionResult Delete(int id)
         {
 
-            var item = ab.TeacherRegistrations.Where(x => x.Tid == id).First();
-            ab.TeacherRegistrations.Remove(item);
+            ab.TeacherAssigns.RemoveRange(ab.TeacherAssigns.Where(x=>x.TR_FK==id));
+            ab.TeacherRegistrations.Remove(ab.TeacherRegistrations.Where(x=>x.Tid==id).First());
             ab.SaveChanges();
             return RedirectToAction("TeacherRecord");
         }
-        [HttpGet]
-
-        public ActionResult Edit(int id)
-        {
-            var item = ab.TeacherRegistrations.FirstOrDefault(x => x.Tid == id);
-            return View("Edit", item);
-        }
-        [HttpPost]
-        public ActionResult Edit(TeacherRegistration model)
-        {
-
-            if (model.Tid > 0)
-            {
-                var item = ab.TeacherRegistrations.FirstOrDefault(x => x.Tid == model.Tid);
-                item.TeacherName= model.TeacherName;
-                item.TeacherCnic = model.TeacherCnic;
-                item.Address = model.Address;
-                item.Email = model.Email;
-                if (model.Password != null)
-                {
-                    item.Password = model.Password;
-                }
-
-                ab.SaveChanges();
-                return RedirectToAction("TeacherRecord");
-            }
-            return View();
-        }
+     
         public ActionResult ProfileViewTeacher(int id)
         {
+            var tea = new TeacherDto();
+            tea = ab.TeacherRegistrations.Where(x => x.Tid == id).Select(a => new TeacherDto()
+            {
+                Tid=a.Tid,
+                TeacherName=a.TeacherName,
+                TeacherCnic=a.TeacherCnic,
+                Address=a.Address,
+                Email=a.Email,
+                SubjectID=a.SubjectID,
+                Subjects= (from sb in ab.TeacherAssigns
+                           join s in ab.Subjects on sb.SS_FK equals s.SubjectID
+                           where sb.TR_FK == a.Tid
+                           select new SubjectsDto
+                           {
+                               SubjectName = s.SubjectName,
+                           }).ToList()
 
-            var item = ab.TeacherRegistrations.Where(x => x.Tid == id).FirstOrDefault();
-            ViewBag.item = item;
+            }).FirstOrDefault();
 
-            return View();
+            tea.SubjectNames = string.Join(", ", tea.Subjects.Select(p => p.SubjectName.ToString()));
+
+            return PartialView("_ProfileViewTeacher", tea);
         }
     }
 }

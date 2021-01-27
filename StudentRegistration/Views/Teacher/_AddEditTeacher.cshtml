@@ -1,0 +1,99 @@
+﻿
+@model StudentRegistration.ViewModels.TeacherDto 
+
+<div class="modal fade" id="ViewModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="ViewModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (Model.Tid > 0)     
+                {
+                    <h3 class="modal-title">Edit Teacher</h3>
+                }
+                else
+                {
+                    <h3 class="modal-title">Add Teacher</h3>
+                }
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AddEditTeacher", "Teacher", FormMethod.Post, new { id = "form" }))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" name="Tid" id="Tid" value="@Model.Tid " />
+                                <label>First Name</label>
+                                @Html.TextBoxFor(m => m.TeacherName, new { @class = "form-control", placeholder = "Teacher Name", @required = "required" })
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Cnic #</label>
+                                @Html.TextBoxFor(m => m.TeacherCnic, new { @class = "form-control", placeholder = "Cnic #" })
+                               
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+                             
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter Email", @type = "email", @required = "required" })
+                               
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Password</label>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                             
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <div><label>Subjects</label> </div>
+                                <div>
+                                    @Html.DropDownListFor(m => m.SubjectIds, new SelectList(ViewBag.subjects, "Value", "Text"), new { multiple = "multiple", @class = "js-example-basic-multiple select2" })
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                    </div>
+                    
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var sub = JSON.parse('@Html.Raw(Json.Encode(Model.SubjectIds))');
+        $("#SubjectIds").val(sub);
+        $('.js-example-basic-multiple').select2();
+    });
+
+</script>
