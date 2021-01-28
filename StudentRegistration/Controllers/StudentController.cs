@@ -118,7 +118,9 @@ namespace StudentRegistration.Controllers
 
                 ab.SaveChanges();
             }
+
             return RedirectToAction("StudentRecord");
+           
         }
         public ActionResult Delete(int id)
         {

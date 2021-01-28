@@ -220,6 +220,8 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.multi-select.js" />
     <Content Include="Scripts\jquery.multi-select.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -260,6 +262,7 @@
     <Content Include="Views\Subject\EditSubject.cshtml" />
     <Content Include="Views\Student\_AddEditStudent.cshtml" />
     <Content Include="Views\Teacher\_AddEditTeacher.cshtml" />
+    <Content Include="Views\Teacher\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

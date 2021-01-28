@@ -1,4 +1,4 @@
-﻿@model StudentRegistration.Models.TeacherRegistration
+﻿@model List<StudentRegistration.ViewModels.TeacherDto>
 @{
     ViewBag.Title = "TeacherRecord";
 }
@@ -10,50 +10,9 @@
 <a href="javascript:studentDetails('0')" class="stdDetail btn btn-success" data-id="0">Add Teacher</a>
 <br />
 <br />
-
-<table id="tablemodel" class="table table-bordered table-hover table-striped ">
-
-    <thead>
-
-        <tr>
-            <th>Tid</th>
-            <th>TeacherName</th>
-            <th>TeacherCnic</th>
-            <th>Address</th>
-            <th>Email</th>
-            <th>Subjects</th>
-            <th>Action</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in ViewBag.List)
-        {
-         <tr id="row_@item.Tid">
-            <td>@item.Tid</td>
-            <td>@item.TeacherName</td>
-            <td>@item.TeacherCnic</td>
-            <td>@item.Address</td>
-            <td>@item.Email</td>
-            <td>@item.SubjectNames</td>
-
-            <td>
-                <a href="javascript:studentDetails('@item.Tid')" class="stdDetail btn btn-success" data-id="@item.Tid">Edit</a>
-                <a href="javascript:studentProfile('@item.Tid')" class="stdDetail btn btn-success" data-id="@item.Tid">Profile</a>
-                @*<a href="@Url.Action("Delete",new { id=item.Tid })"><i class="btn btn-danger"><b>Delete</b> </i></a>*@
-          
-
-                <a class="btn btn-danger" id="btnDelete" onclick="ConfirmDelete(@item.Tid)">Delete</a>
-            
-            </td>
-        </tr>
-        }
-    </tbody>
-
-</table>
-
-
-
+<div id="divlist">
+    @Html.Partial("_List", Model)
+</div>
 <div class="modal fade" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -76,9 +35,6 @@
     <input type="hidden" id="hiddenid" />
 </div>
 
-
-
-
 <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
 
 @section scripts{
@@ -89,8 +45,29 @@
 
         $(function () {
             $("#loaderbody").addClass('hide');
+
+
+            $(document).bind('ajaxStart', function () {
+                $("#loaderbody").removeClass('hide');
+            }).bind('ajaxStop', function () {
+                $("#loaderbody").addClass('hide');
+            });
         });
-    
+
+        function GetList() {
+            $.ajax({
+                url: '/Teacher/GetList',
+                success: function (data) {
+                    $('#divlist').html(data);
+
+                    $('#tablemodel').DataTable({});
+                },
+                error: function () {
+                    alert("Data load failed.");
+                }
+            });
+
+        }
         function studentDetails(rid) {
             $.ajax({
                 type: "GET",
@@ -134,31 +111,21 @@
         }
 
         var DeleteTeacher = function () {
-
             $("#loaderDiv").show();
-
             var stdid = $("#hiddenid").val();
-           
             $.ajax({
 
                 type: "POST",
                 url: "/Teacher/Delete",
                 data: { id: stdid },
-                beforeSend: function () {
-                    $("#loaderbody").show();
-                },
                 success: function (result) {
                     $("#loaderDiv").hide();
                     $("#myModal").modal("hide");
-                    $("#row_" + stdid).remove();
-                    
+
+                    GetList();
                 },
-                complete: function () {
-                    $("#loaderbody").hide();
-                },
-                
             })
-           
+
         }
     </script>
 
